@@ -9,4 +9,4 @@ The goals are to help shortage by boosting donor engagement with a recognition s
 
 - [Letter of intent](docs/letter_of_intent.pdf)
 - [User stories](docs/user_stories.pdf)
-- Architecture diagrams
+- [Architecture Design](docs/architecture_design.pdf)
