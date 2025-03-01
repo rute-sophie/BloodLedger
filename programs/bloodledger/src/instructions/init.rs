@@ -44,6 +44,9 @@ impl<'info> Init<'info> {
             rewards_mint: self.rewards_mint.key()
         });
 
+
+
+
         Ok(())
     }
 }

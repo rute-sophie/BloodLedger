@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-bloodledger_project = "CV7ZUsLNXej2JbLNwkwo8TjZWY7Shxi4dDBggemdNa8z"
+bloodledger = "CV7ZUsLNXej2JbLNwkwo8TjZWY7Shxi4dDBggemdNa8z"
 
 [registry]
 url = "https://api.apr.dev"

@@ -4,7 +4,7 @@
 //A Donation event will be issued with the blood donation data.
 
 use anchor_lang::prelude::*;
-use anchor_spl::token::{Token, TokenAccount};
+use anchor_spl::token::{Mint, Token, TokenAccount};
 use crate::state::{Config, Donor, Institution};
 
 #[derive(Accounts)]
@@ -14,9 +14,8 @@ pub struct AddDonationEvent<'info> {
     #[account(mut)]
     pub institution: Account<'info, Institution>,
     #[account(mut)]
-    pub reward_vault: Account<'info, TokenAccount>,
-    #[account(mut)]
-    pub donor_wallet: Account<'info, TokenAccount>,
+    pub donor_token_account: Account<'info, TokenAccount>,
+    pub rewards_mint: Account<'info, Mint>,
     pub token_program: Program<'info, Token>,
     #[account(mut)]
     pub config: Account<'info, Config>,

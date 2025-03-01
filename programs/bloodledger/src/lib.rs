@@ -11,7 +11,7 @@ pub use state::*;
 declare_id!("CV7ZUsLNXej2JbLNwkwo8TjZWY7Shxi4dDBggemdNa8z");
 
 #[program]
-pub mod bloodledger_project {
+pub mod bloodledger {
 
     use super::*;
 
@@ -28,8 +28,7 @@ pub mod bloodledger_project {
     }
 
     pub fn register_donor(ctx: Context<RegisterDonor>, blood_type: String) -> Result<()> {
-
-        Ok(())
+        ctx.accounts.register_donor(blood_type)
     }
 
     pub fn add_donation(ctx: Context<AddDonationEvent>, blood_type_index: u8) -> Result<()> { 
