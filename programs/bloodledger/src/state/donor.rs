@@ -9,9 +9,7 @@ pub struct Donor {
     pub last_donation: u64,
     pub number_donation: u64,
     pub total_rewards: u64,
-    pub health_check: bool
+    pub health_check: bool,
 }
 
-impl Donor {
-
-}
+impl Donor {}

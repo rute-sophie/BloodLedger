@@ -3,20 +3,103 @@
 //A small reward in the form of tokens will be issued by executing a CPI into the token program, proportional to the demand value.
 //A Donation event will be issued with the blood donation data.
 
+use crate::{
+    state::{Config, Donor, Institution},
+    CustomError, DonationEvent,
+};
 use anchor_lang::prelude::*;
-use anchor_spl::token::{Mint, Token, TokenAccount};
-use crate::state::{Config, Donor, Institution};
+use anchor_spl::token::{self, Mint, MintTo, Token, TokenAccount};
 
 #[derive(Accounts)]
 pub struct AddDonationEvent<'info> {
+    pub owner: Signer<'info>,
+
+    #[account(
+        mut,
+        has_one = owner @ CustomError::Unauthorized,
+    )]
+    pub institution: Account<'info, Institution>,
+
     #[account(mut)]
     pub donor: Account<'info, Donor>,
-    #[account(mut)]
-    pub institution: Account<'info, Institution>,
+
     #[account(mut)]
     pub donor_token_account: Account<'info, TokenAccount>,
+
+    #[account(
+        mut,
+        seeds = [b"rewards".as_ref()],
+        bump
+    )]
     pub rewards_mint: Account<'info, Mint>,
+
     pub token_program: Program<'info, Token>,
-    #[account(mut)]
+    #[account(
+        seeds = [b"config".as_ref()], 
+        bump
+    )]
     pub config: Account<'info, Config>,
+}
+
+impl<'info> AddDonationEvent<'info> {
+    pub fn add_donation(
+        &mut self,
+        blood_type: String,
+        id: String,
+        expiration_date: u64,
+    ) -> Result<()> {
+        // checks if the blood type of the donation mataches the donor's
+        require!(
+            blood_type == self.donor.blood_type,
+            CustomError::InvalidBloodType
+        );
+
+        //looks for the object that represents that specific blood type inside inventory array
+        let inventory = self
+            .institution
+            .inventory
+            .iter_mut()
+            .find(|inventory| inventory.blood_type == blood_type)
+            .unwrap();
+
+        // added 1 unit to the blood inventory of the institution
+        inventory.current_units += 1;
+
+        let current_time = Clock::get()?.unix_timestamp as u64;
+
+        self.donor.last_donation = current_time;
+        self.donor.number_donation += 1;
+
+        // the token reward value is scaled by the demand, to be proportional to the blood type's rarity
+        let rewards = (1 + inventory.demand as u64) * 10u64.pow(self.rewards_mint.decimals as u32);
+
+        self.donor.total_rewards += rewards;
+
+        self.mint_rewards(rewards)?;
+
+        emit!(DonationEvent {
+            timestamp: current_time,
+            blood_type,
+            id,
+            expiration_date
+        });
+
+        Ok(())
+    }
+
+    pub fn mint_rewards(&mut self, amount: u64) -> Result<()> {
+        let cpi_accounts = MintTo {
+            mint: self.rewards_mint.to_account_info(),
+            to: self.donor_token_account.to_account_info(),
+            authority: self.config.to_account_info(),
+        };
+
+        let cpi_program = self.token_program.to_account_info();
+
+        let seeds = &[b"config".as_ref(), &[self.config.bump]];
+        let signer_seeds = &[&seeds[..]];
+
+        let cpi_context = CpiContext::new_with_signer(cpi_program, cpi_accounts, signer_seeds);
+        token::mint_to(cpi_context, amount)
+    }
 }

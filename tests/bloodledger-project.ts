@@ -86,7 +86,7 @@ describe("bloodledger-project", () => {
       { 
         return {
           bloodType: type,
-          inventory: new BN(inventory),
+          currentUnits: new BN(inventory),
           used: new BN(used),
           demand
         }

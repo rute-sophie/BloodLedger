@@ -18,7 +18,7 @@ pub struct Init<'info> {
         space = 8 + Config::INIT_SPACE,
     )]
     pub config: Account<'info, Config>,
-    
+
     //Initializes rewards mint with a CPI to the token program.
     #[account(
         init,
@@ -30,22 +30,17 @@ pub struct Init<'info> {
     )]
     pub rewards_mint: Account<'info, Mint>,
     pub system_program: Program<'info, System>,
-    pub token_program: Program<'info, Token>
+    pub token_program: Program<'info, Token>,
 }
 
 impl<'info> Init<'info> {
-    pub fn init(
-        &mut self,
-        bumps: &InitBumps,
-    ) -> Result<()> {
+    pub fn init(&mut self, bumps: &InitBumps) -> Result<()> {
         let _ = bumps;
         self.config.set_inner(Config {
             authority: self.authority.key(),
-            rewards_mint: self.rewards_mint.key()
+            rewards_mint: self.rewards_mint.key(),
+            bump: bumps.config,
         });
-
-
-
 
         Ok(())
     }

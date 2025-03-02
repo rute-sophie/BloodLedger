@@ -1,7 +1,7 @@
 //A blood donor can register at any time.
 
-use anchor_lang::prelude::*;
 use crate::state::Donor;
+use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
 pub struct RegisterDonor<'info> {
@@ -9,8 +9,8 @@ pub struct RegisterDonor<'info> {
     pub owner: Signer<'info>,
 
     #[account(
-        init, 
-        payer = owner, 
+        init,
+        payer = owner,
         space = 8 + Donor::INIT_SPACE,
         seeds = [b"donor".as_ref(), owner.key().as_ref()],
         bump
@@ -20,13 +20,8 @@ pub struct RegisterDonor<'info> {
     pub system_program: Program<'info, System>,
 }
 
-
 impl<'info> RegisterDonor<'info> {
-    pub fn register_donor(
-        &mut self,
-        blood_type: String,
-    ) -> Result<()> {
-
+    pub fn register_donor(&mut self, blood_type: String) -> Result<()> {
         self.donor.blood_type = blood_type;
         self.donor.owner = self.owner.key();
 

@@ -2,9 +2,9 @@
 //The contract will update the donor and the institution inventory records.
 //If the blood unit was used, extra rewards in the form of tokens will be issued to the donor by executing a CPI into the token program, proportional to the demand value.
 //A Blood Unit Used event will be issued with the relevant data.
+use crate::state::{Config, Institution};
 use anchor_lang::prelude::*;
 use anchor_spl::token::{Token, TokenAccount};
-use crate::state::{Config, Institution};
 
 #[derive(Accounts)]
 pub struct AddBloodUnitUsedEvent<'info> {

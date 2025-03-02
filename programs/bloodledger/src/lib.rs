@@ -23,7 +23,7 @@ pub mod bloodledger {
         ctx.accounts.init_institution(name)
     }
 
-    pub fn set_inventory(ctx: Context<SetInventory>, inventory: [Inventory;8]) -> Result<()> {
+    pub fn set_inventory(ctx: Context<SetInventory>, inventory: [Inventory; 8]) -> Result<()> {
         ctx.accounts.set_inventory(inventory)
     }
 
@@ -31,14 +31,19 @@ pub mod bloodledger {
         ctx.accounts.register_donor(blood_type)
     }
 
-    pub fn add_donation(ctx: Context<AddDonationEvent>, blood_type_index: u8) -> Result<()> { 
-
-        Ok(())
+    pub fn add_donation(
+        ctx: Context<AddDonationEvent>,
+        blood_type: String,
+        id: String,
+        expiration_date: u64,
+    ) -> Result<()> {
+        ctx.accounts.add_donation(blood_type, id, expiration_date)
     }
 
-    pub fn add_blood_unit_used(ctx: Context<AddBloodUnitUsedEvent>, blood_type_index: u8) -> Result<()> {
-
-
+    pub fn add_blood_unit_used(
+        ctx: Context<AddBloodUnitUsedEvent>,
+        blood_type_index: u8,
+    ) -> Result<()> {
         Ok(())
     }
 }

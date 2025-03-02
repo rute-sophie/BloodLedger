@@ -1,6 +1,9 @@
 use anchor_lang::prelude::*;
 
-use crate::{state::{Config, Institution}, CustomError};
+use crate::{
+    state::{Config, Institution},
+    CustomError,
+};
 
 //Initializes a new institution account.
 
@@ -10,8 +13,8 @@ pub struct InitInstitution<'info> {
     #[account(mut)]
     pub authority: Signer<'info>,
     #[account(
-        init, 
-        payer = authority, 
+        init,
+        payer = authority,
         space = 8 + Institution::INIT_SPACE,
         seeds = [b"institution".as_ref(), name.as_ref()],
         bump,
@@ -31,11 +34,7 @@ pub struct InitInstitution<'info> {
 }
 
 impl<'info> InitInstitution<'info> {
-    pub fn init_institution(
-        &mut self,
-        name: String,
-    ) -> Result<()> {
-
+    pub fn init_institution(&mut self, name: String) -> Result<()> {
         self.institution.name = name;
         self.institution.owner = self.institution_owner.key();
 
