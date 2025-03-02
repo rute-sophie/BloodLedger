@@ -9,7 +9,7 @@ pub use error::*;
 pub use instructions::*;
 pub use state::*;
 
-declare_id!("CV7ZUsLNXej2JbLNwkwo8TjZWY7Shxi4dDBggemdNa8z");
+declare_id!("b1oodxpcTKPaXCUd5nnmTb8q85vRMfNmDLsqcqvUwwF");
 
 #[program]
 pub mod bloodledger {

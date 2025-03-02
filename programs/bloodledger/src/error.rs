@@ -6,6 +6,8 @@ pub enum CustomError {
     Unauthorized,
     #[msg("Invalid Blood Type")]
     InvalidBloodType,
+    #[msg("Duplicated Blood Type")]
+    DuplicatedBloodType,
     #[msg("Insufficient Blood Stock")]
     InsufficientStock,
 }

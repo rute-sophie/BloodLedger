@@ -1,6 +1,6 @@
 //A blood donor can register at any time.
 
-use crate::state::Donor;
+use crate::{state::Donor, utils::validate_blood_type};
 use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
@@ -22,6 +22,8 @@ pub struct RegisterDonor<'info> {
 
 impl<'info> RegisterDonor<'info> {
     pub fn register_donor(&mut self, blood_type: String) -> Result<()> {
+        validate_blood_type(&blood_type)?;
+        
         self.donor.blood_type = blood_type;
         self.donor.owner = self.owner.key();
 

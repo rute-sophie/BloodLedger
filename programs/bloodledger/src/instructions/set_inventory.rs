@@ -1,4 +1,4 @@
-use crate::state::{Institution, Inventory};
+use crate::{state::{Institution, Inventory}, utils::validate_inventory};
 use anchor_lang::prelude::*;
 
 //After an admin initializes the institution account, the institution admin needs to set current inventory and demand.
@@ -17,6 +17,7 @@ pub struct SetInventory<'info> {
 
 impl<'info> SetInventory<'info> {
     pub fn set_inventory(&mut self, inventory: [Inventory; 8]) -> Result<()> {
+        validate_inventory(&inventory)?;
         self.institution.inventory = inventory;
         Ok(())
     }

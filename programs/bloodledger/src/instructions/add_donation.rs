@@ -9,10 +9,11 @@ use crate::{
     CustomError, DonationEvent,
 };
 use anchor_lang::prelude::*;
-use anchor_spl::token::{Mint, Token, TokenAccount};
+use anchor_spl::{associated_token::AssociatedToken, token::{Mint, Token, TokenAccount}};
 
 #[derive(Accounts)]
 pub struct AddDonationEvent<'info> {
+    #[account(mut)]
     pub owner: Signer<'info>,
 
     #[account(
@@ -21,10 +22,20 @@ pub struct AddDonationEvent<'info> {
     )]
     pub institution: Account<'info, Institution>,
 
-    #[account(mut)]
+    #[account(
+        mut,
+        constraint = donor.owner == donor_wallet.key(),
+    )]
     pub donor: Account<'info, Donor>,
 
-    #[account(mut)]
+    pub donor_wallet: SystemAccount<'info>,
+
+    #[account(
+        init_if_needed,
+        payer = owner,
+        associated_token::mint = rewards_mint,
+        associated_token::authority = donor_wallet,
+    )]
     pub donor_token_account: Account<'info, TokenAccount>,
 
     #[account(
@@ -34,12 +45,15 @@ pub struct AddDonationEvent<'info> {
     )]
     pub rewards_mint: Account<'info, Mint>,
 
-    pub token_program: Program<'info, Token>,
     #[account(
         seeds = [b"config".as_ref()], 
         bump
     )]
     pub config: Account<'info, Config>,
+
+    pub token_program: Program<'info, Token>,
+    pub system_program: Program<'info, System>,
+    pub associated_token_program: Program<'info, AssociatedToken>,
 }
 
 impl<'info> AddDonationEvent<'info> {
