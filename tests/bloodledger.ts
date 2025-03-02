@@ -3,18 +3,25 @@ import { Program } from "@coral-xyz/anchor";
 import { Bloodledger } from "../target/types/bloodledger";
 import { Connection, Keypair, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import { BN } from "bn.js";
+import { getOrCreateAssociatedTokenAccount } from "@solana/spl-token";
+import {assert, expect} from 'chai';
 
 
 
-describe("bloodledger-project", () => {
+
+describe("bloodledger", () => {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
 
-  const program = anchor.workspace.BloodledgerProject as Program<Bloodledger>;
+  
+  const program = anchor.workspace.Bloodledger as Program<Bloodledger>;
 
   let admin: Keypair;
   let institutionAdmin: Keypair;
   let donor: Keypair;
+  let rewardsMint: PublicKey;
+  let donorAccount: PublicKey;
+  let donorTokenAccount: PublicKey;
   let connection: Connection;
 
   let institution: PublicKey;
@@ -39,6 +46,9 @@ describe("bloodledger-project", () => {
       connection.confirmTransaction(sigs[2])
     ]);
 
+
+
+
   });
 
   it("Initialize config!", async () => {
@@ -47,9 +57,10 @@ describe("bloodledger-project", () => {
     .initConfig()
     .accounts({authority: admin.publicKey})
     .signers([admin])
-    .rpc();
+    .rpcAndKeys();
 
-    console.log("Your transaction signature", tx);
+    rewardsMint = tx.pubkeys.rewardsMint;
+    console.log("Your transaction signature", tx.signature);
   });
 
   it("Init institution!", async () => {
@@ -70,13 +81,16 @@ describe("bloodledger-project", () => {
   it("Register donor!", async () => {
 
     const tx = await program.methods
-    .registerDonor("O+")
+    .registerDonor("AB-")
     .accounts({
       owner: donor.publicKey,
     })
     .signers([donor])
-    .rpc();
-    console.log("Your transaction signature", tx);
+    .rpcAndKeys();
+
+    donorAccount = tx.pubkeys.donor;
+
+    console.log("Your transaction signature", tx.signature);
   });
 
   
@@ -114,5 +128,48 @@ describe("bloodledger-project", () => {
     console.log("Your transaction signature", tx);
   });
 
+  
+  it("Add Donation <3!", async () => {
+    // get or create donor ata for rewards mint
+
+    const ata = await getOrCreateAssociatedTokenAccount(connection, donor, rewardsMint, donor.publicKey);
+
+    donorTokenAccount = ata.address;
+    // Solana uses seconds so this is to get UNIX Epoch time in seconds
+    const now = Math.floor(Date.now() / 1000);
+    const bloodExpired = now + 21 * 24 * 60 * 60; 
+
+    const tx = await program.methods
+    .addDonation("AB-", "BU1056", new BN(bloodExpired))
+    .accountsPartial({
+      owner: institutionAdmin.publicKey,
+      institution,
+      donor: donorAccount,
+      donorTokenAccount: ata.address
+    })
+    .signers([institutionAdmin])
+    .rpc();
+    console.log("Your transaction signature", tx);
+  });
+  
+  it("Fail to add Donation with wrong type!", async () => {
+    // Solana uses seconds so this is to get UNIX Epoch time in seconds
+    const now = Math.floor(Date.now() / 1000);
+    const bloodExpired = now + 21 * 24 * 60 * 60; 
+
+    await program.methods
+    .addDonation("AB+", "BU1056", new BN(bloodExpired))
+    .accountsPartial({
+      owner: institutionAdmin.publicKey,
+      institution,
+      donor: donorAccount,
+      donorTokenAccount: donorTokenAccount
+    })
+    .signers([institutionAdmin])
+    .rpc()
+    .then(res => assert(false, ""))
+    .catch(e => expect(e.error.errorMessage).to.equal("Invalid Blood Type"));
+  
+  });
 
 });

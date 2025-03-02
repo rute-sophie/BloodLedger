@@ -3,6 +3,7 @@ use anchor_lang::prelude::*;
 pub mod error;
 pub mod instructions;
 pub mod state;
+mod utils;
 
 pub use error::*;
 pub use instructions::*;
@@ -42,8 +43,12 @@ pub mod bloodledger {
 
     pub fn add_blood_unit_used(
         ctx: Context<AddBloodUnitUsedEvent>,
-        blood_type_index: u8,
+        blood_type: String,
+        id: String,
+        expired: bool,
+        health_check: bool,
     ) -> Result<()> {
-        Ok(())
+        ctx.accounts
+            .add_blood_unit_used(blood_type, id, expired, health_check)
     }
 }

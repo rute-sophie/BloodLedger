@@ -5,10 +5,11 @@
 
 use crate::{
     state::{Config, Donor, Institution},
+    utils::mint_rewards,
     CustomError, DonationEvent,
 };
 use anchor_lang::prelude::*;
-use anchor_spl::token::{self, Mint, MintTo, Token, TokenAccount};
+use anchor_spl::token::{Mint, Token, TokenAccount};
 
 #[derive(Accounts)]
 pub struct AddDonationEvent<'info> {
@@ -70,12 +71,18 @@ impl<'info> AddDonationEvent<'info> {
         self.donor.last_donation = current_time;
         self.donor.number_donation += 1;
 
-        // the token reward value is scaled by the demand, to be proportional to the blood type's rarity
+        // The token reward amount is adjusted based on demand, making it proportional to the rarity of the blood type.
         let rewards = (1 + inventory.demand as u64) * 10u64.pow(self.rewards_mint.decimals as u32);
 
         self.donor.total_rewards += rewards;
 
-        self.mint_rewards(rewards)?;
+        mint_rewards(
+            self.rewards_mint.to_account_info(),
+            self.donor_token_account.to_account_info(),
+            &self.config,
+            self.token_program.to_account_info(),
+            rewards,
+        )?;
 
         emit!(DonationEvent {
             timestamp: current_time,
@@ -85,21 +92,5 @@ impl<'info> AddDonationEvent<'info> {
         });
 
         Ok(())
-    }
-
-    pub fn mint_rewards(&mut self, amount: u64) -> Result<()> {
-        let cpi_accounts = MintTo {
-            mint: self.rewards_mint.to_account_info(),
-            to: self.donor_token_account.to_account_info(),
-            authority: self.config.to_account_info(),
-        };
-
-        let cpi_program = self.token_program.to_account_info();
-
-        let seeds = &[b"config".as_ref(), &[self.config.bump]];
-        let signer_seeds = &[&seeds[..]];
-
-        let cpi_context = CpiContext::new_with_signer(cpi_program, cpi_accounts, signer_seeds);
-        token::mint_to(cpi_context, amount)
     }
 }
