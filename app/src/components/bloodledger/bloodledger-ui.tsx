@@ -392,40 +392,40 @@ export function InstitutionManagement() {
   }
 
   return (
-    <div className="card bg-gray-50 shadow-xl max-w-4xl mx-auto border-[oklch(65.69%_0.196_275.75_/_1)]">
-      <div className="card-body space-y-8">
-        <h3 className="card-title text-2xl font-bold mb-6 text-[#1a1a2e] bg-[#9945FF] p-4 rounded-lg shadow-sm">Institution Management</h3>
-        <div className="mb-6 p-6 bg-white rounded-lg shadow-sm border border-[oklch(65.69%_0.196_275.75_/_1)]">
-          <p className="text-lg font-semibold text-gray-800">{institution.account.name}</p>
-          <p className="text-sm text-gray-600">Owner: {institution.account.owner.toBase58()}</p>
+    <div className="card bg-[#1a1a2e] shadow-xl max-w-4xl mx-auto border-[#9945FF]">
+      <div className="card-body space-y-4">
+        <h3 className="card-title text-2xl font-bold mb-2 text-white p-4 rounded-lg shadow-sm">Institution Management</h3>
+        <div className="mb-4 p-6 bg-[#2a2a3a] rounded-lg shadow-sm border border-[#9945FF]">
+          <p className="text-lg font-semibold text-white">{institution.account.name}</p>
+          <p className="text-sm text-gray-400">Owner: {institution.account.owner.toBase58()}</p>
         </div>
 
         <div className="space-y-8">
-          <h4 className="text-xl font-semibold text-[#1a1a2e] bg-[#9945FF] p-4 rounded-lg shadow-sm">Inventory Management</h4>
+          <h4 className="text-xl font-semibold text-white p-4 rounded-lg shadow-sm">Inventory Management</h4>
           {inventory.map((item, index) => (
-            <div key={index} className="card bg-white shadow-md hover:shadow-lg transition-shadow duration-200 border border-[oklch(65.69%_0.196_275.75_/_1)]">
+            <div key={index} className="card bg-[#2a2a3a] shadow-md hover:shadow-lg transition-shadow duration-200 border border-[#9945FF]">
               <div className="card-body p-6">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                   <div className="form-control">
                     <label className="label">
-                      <span className="label-text font-medium text-gray-700">Blood Type</span>
+                      <span className="label-text font-medium text-white">Blood Type</span>
                     </label>
                     <select
-                      className="select select-bordered w-full bg-white text-gray-800 border-[oklch(65.69%_0.196_275.75_/_1)] focus:border-[oklch(65.69%_0.196_275.75_/_1)] focus:ring-[oklch(65.69%_0.196_275.75_/_1)] hover:border-[oklch(65.69%_0.196_275.75_/_1)] transition-colors duration-200"
+                      className="select select-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF] hover:border-[#9945FF] transition-colors duration-200"
                       value={item.bloodType || getDefaultBloodType(index)}
                       onChange={(e) => handleInventoryChange(index, 'bloodType', e.target.value)}
                     >
                       {item.bloodType ? (
-                        <option value={item.bloodType} className="text-gray-800">{item.bloodType}</option>
+                        <option value={item.bloodType} className="text-white">{item.bloodType}</option>
                       ) : (
-                        <option value={getDefaultBloodType(index)} className="text-gray-800">
+                        <option value={getDefaultBloodType(index)} className="text-white">
                           {getDefaultBloodType(index)}
                         </option>
                       )}
                       {getAvailableBloodTypes(index)
                         .filter(type => type !== item.bloodType && type !== getDefaultBloodType(index))
                         .map(type => (
-                          <option key={type} value={type} className="text-gray-800">
+                          <option key={type} value={type} className="text-white">
                             {type}
                           </option>
                         ))}
@@ -433,35 +433,35 @@ export function InstitutionManagement() {
                   </div>
                   <div className="form-control">
                     <label className="label">
-                      <span className="label-text font-medium text-gray-700">Current Units</span>
+                      <span className="label-text font-medium text-white">Current Units</span>
                     </label>
                     <input
                       type="number"
-                      className="input input-bordered w-full border-[oklch(65.69%_0.196_275.75_/_1)] focus:border-[oklch(65.69%_0.196_275.75_/_1)] focus:ring-[oklch(65.69%_0.196_275.75_/_1)]"
+                      className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
                       value={item.currentUnits.toString()}
                       onChange={(e) => handleInventoryChange(index, 'currentUnits', e.target.value)}
                     />
                   </div>
                   <div className="form-control">
                     <label className="label">
-                      <span className="label-text font-medium text-gray-700">Used Units</span>
+                      <span className="label-text font-medium text-white">Used Units</span>
                     </label>
                     <input
                       type="number"
-                      className="input input-bordered w-full border-[oklch(65.69%_0.196_275.75_/_1)] focus:border-[oklch(65.69%_0.196_275.75_/_1)] focus:ring-[oklch(65.69%_0.196_275.75_/_1)]"
+                      className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
                       value={item.used.toString()}
                       onChange={(e) => handleInventoryChange(index, 'used', e.target.value)}
                     />
                   </div>
                   <div className="form-control">
                     <label className="label">
-                      <span className="label-text font-medium text-gray-700">Demand Level (0-255)</span>
+                      <span className="label-text font-medium text-white">Demand Level (0-255)</span>
                     </label>
                     <input
                       type="number"
                       min="0"
                       max="255"
-                      className="input input-bordered w-full border-[oklch(65.69%_0.196_275.75_/_1)] focus:border-[oklch(65.69%_0.196_275.75_/_1)] focus:ring-[oklch(65.69%_0.196_275.75_/_1)]"
+                      className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
                       value={item.demand}
                       onChange={(e) => handleInventoryChange(index, 'demand', e.target.value)}
                     />
@@ -474,7 +474,7 @@ export function InstitutionManagement() {
 
         <div className="card-actions justify-end mt-8">
           <button 
-            className="btn bg-[#1a1a2e] hover:bg-[#16213e] text-white border-0 shadow-md hover:shadow-lg transition-all duration-200"
+            className="btn bg-[#9945FF] hover:bg-[#7a35d4] text-white border-0 shadow-md hover:shadow-lg transition-all duration-200"
             onClick={handleSubmitInventory}
             disabled={isLoading}
           >
@@ -482,20 +482,20 @@ export function InstitutionManagement() {
           </button>
         </div>
       </div>
-      <div className="card bg-white shadow-xl mt-8 border border-[oklch(65.69%_0.196_275.75_/_1)]">
-        <div className="card-body space-y-8">
-          <h2 className="card-title text-2xl font-bold text-[#1a1a2e] mb-6 bg-[#9945FF] p-4 rounded-lg shadow-sm">Manage Blood Units</h2>
+      <div className="card bg-[#2a2a3a] shadow-xl mt-8 border border-[#9945FF]">
+        <div className="card-body space-y-4">
+          <h2 className="card-title text-2xl font-bold text-white p-4 rounded-lg shadow-sm">Manage Blood Units</h2>
 
           {/* Register New Donation */}
           <div className="form-control w-full max-w-md mb-8">
-            <h3 className="text-xl font-semibold mb-6 text-[#1a1a2e] bg-[#9945FF] p-4 rounded-lg shadow-sm">Register New Donation</h3>
+            <h3 className="text-xl font-semibold mb-6 text-white p-4 rounded-lg shadow-sm">Register New Donation</h3>
             <div className="grid grid-cols-1 gap-6">
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-medium text-gray-700">Blood Type</span>
+                  <span className="label-text font-medium text-white">Blood Type</span>
                 </label>
                 <select
-                  className="select select-bordered w-full bg-white text-gray-800 border-[oklch(65.69%_0.196_275.75_/_1)] focus:border-[oklch(65.69%_0.196_275.75_/_1)] focus:ring-[oklch(65.69%_0.196_275.75_/_1)] hover:border-[oklch(65.69%_0.196_275.75_/_1)] transition-colors duration-200"
+                  className="select select-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF] hover:border-[#9945FF] transition-colors duration-200"
                   value={newDonation?.bloodType || ''}
                   onChange={(e) => setNewDonation(prev => ({
                     bloodType: e.target.value,
@@ -504,9 +504,9 @@ export function InstitutionManagement() {
                     donorWallet: prev?.donorWallet || ''
                   }))}
                 >
-                  <option value="" className="text-gray-500">Choose blood type</option>
+                  <option value="" className="text-gray-400">Choose blood type</option>
                   {BLOOD_TYPES.map(type => (
-                    <option key={type} value={type} className="text-gray-800">
+                    <option key={type} value={type} className="text-white">
                       {type}
                     </option>
                   ))}
@@ -514,11 +514,11 @@ export function InstitutionManagement() {
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-medium text-gray-700">Unit ID</span>
+                  <span className="label-text font-medium text-white">Unit ID</span>
                 </label>
                 <input
                   type="text"
-                  className="input input-bordered w-full border-[oklch(65.69%_0.196_275.75_/_1)] focus:border-[oklch(65.69%_0.196_275.75_/_1)] focus:ring-[oklch(65.69%_0.196_275.75_/_1)]"
+                  className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
                   placeholder="Unique ID for this donation"
                   value={newDonation?.id || ''}
                   onChange={(e) => setNewDonation(prev => ({
@@ -531,11 +531,11 @@ export function InstitutionManagement() {
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-medium text-gray-700">Expiry Date (days from now)</span>
+                  <span className="label-text font-medium text-white">Expiry Date (days from now)</span>
                 </label>
                 <input
                   type="number"
-                  className="input input-bordered w-full border-[oklch(65.69%_0.196_275.75_/_1)] focus:border-[oklch(65.69%_0.196_275.75_/_1)] focus:ring-[oklch(65.69%_0.196_275.75_/_1)]"
+                  className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
                   placeholder="Number of days"
                   value={newDonation?.expiryDays || ''}
                   onChange={(e) => setNewDonation(prev => ({
@@ -548,11 +548,11 @@ export function InstitutionManagement() {
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-medium text-gray-700">Donor Wallet</span>
+                  <span className="label-text font-medium text-white">Donor Wallet</span>
                 </label>
                 <input
                   type="text"
-                  className={`input input-bordered w-full border-[oklch(65.69%_0.196_275.75_/_1)] focus:border-[oklch(65.69%_0.196_275.75_/_1)] focus:ring-[oklch(65.69%_0.196_275.75_/_1)] ${donorWalletError && newDonation?.donorWallet ? 'border-red-500' : ''}`}
+                  className={`input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF] ${donorWalletError && newDonation?.donorWallet ? 'border-red-500' : ''}`}
                   placeholder="Enter donor's public key"
                   value={newDonation?.donorWallet || ''}
                   onChange={async (e) => {
@@ -573,7 +573,7 @@ export function InstitutionManagement() {
                 )}
               </div>
               <button 
-                className="btn bg-[#1a1a2e] hover:bg-[#16213e] text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 mt-4"
+                className="btn btn-lg w-full bg-[#9945FF] hover:bg-[#7a35d4] text-white border-0 shadow-md hover:shadow-lg transition-all duration-200"
                 onClick={handleAddDonation}
                 disabled={!newDonation?.bloodType || !newDonation?.id || !newDonation?.expiryDays || !newDonation?.donorWallet || !!donorWalletError || !isDonorValid}
               >
@@ -584,14 +584,14 @@ export function InstitutionManagement() {
 
           {/* Record Used Unit */}
           <div className="form-control w-full max-w-md">
-            <h3 className="text-xl font-semibold mb-6 text-[#1a1a2e] bg-[#9945FF] p-4 rounded-lg shadow-sm">Record Used Blood Unit</h3>
+            <h3 className="text-xl font-semibold mb-6 text-white p-4 rounded-lg shadow-sm">Record Used Blood Unit</h3>
             <div className="grid grid-cols-1 gap-6">
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-medium text-gray-700">Blood Type</span>
+                  <span className="label-text font-medium text-white">Blood Type</span>
                 </label>
                 <select
-                  className="select select-bordered w-full bg-white text-gray-800 border-[oklch(65.69%_0.196_275.75_/_1)] focus:border-[oklch(65.69%_0.196_275.75_/_1)] focus:ring-[oklch(65.69%_0.196_275.75_/_1)] hover:border-[oklch(65.69%_0.196_275.75_/_1)] transition-colors duration-200"
+                  className="select select-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF] hover:border-[#9945FF] transition-colors duration-200"
                   value={usedUnit?.bloodType || ''}
                   onChange={(e) => setUsedUnit(prev => ({
                     bloodType: e.target.value,
@@ -601,9 +601,9 @@ export function InstitutionManagement() {
                     donorWallet: prev?.donorWallet || ''
                   }))}
                 >
-                  <option value="" className="text-gray-500">Choose blood type</option>
+                  <option value="" className="text-gray-400">Choose blood type</option>
                   {BLOOD_TYPES.map(type => (
-                    <option key={type} value={type} className="text-gray-800">
+                    <option key={type} value={type} className="text-white">
                       {type}
                     </option>
                   ))}
@@ -611,11 +611,11 @@ export function InstitutionManagement() {
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-medium text-gray-700">Unit ID</span>
+                  <span className="label-text font-medium text-white">Unit ID</span>
                 </label>
                 <input
                   type="text"
-                  className="input input-bordered w-full border-[oklch(65.69%_0.196_275.75_/_1)] focus:border-[oklch(65.69%_0.196_275.75_/_1)] focus:ring-[oklch(65.69%_0.196_275.75_/_1)]"
+                  className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
                   placeholder="ID of the used unit"
                   value={usedUnit?.id || ''}
                   onChange={(e) => setUsedUnit(prev => ({
@@ -629,10 +629,10 @@ export function InstitutionManagement() {
               </div>
               <div className="form-control">
                 <label className="label cursor-pointer">
-                  <span className="label-text font-medium text-gray-700">Expired</span>
+                  <span className="label-text font-medium text-white">Expired</span>
                   <input
                     type="checkbox"
-                    className="checkbox checkbox-primary border-[oklch(65.69%_0.196_275.75_/_1)]"
+                    className="checkbox checkbox-primary border-[#9945FF]"
                     checked={usedUnit?.expired || false}
                     onChange={(e) => setUsedUnit(prev => ({
                       bloodType: prev?.bloodType || '',
@@ -646,10 +646,10 @@ export function InstitutionManagement() {
               </div>
               <div className="form-control">
                 <label className="label cursor-pointer">
-                  <span className="label-text font-medium text-gray-700">Passed Health Check</span>
+                  <span className="label-text font-medium text-white">Passed Health Check</span>
                   <input
                     type="checkbox"
-                    className="checkbox checkbox-primary border-[oklch(65.69%_0.196_275.75_/_1)]"
+                    className="checkbox checkbox-primary border-[#9945FF]"
                     checked={usedUnit?.healthCheck || false}
                     onChange={(e) => setUsedUnit(prev => ({
                       bloodType: prev?.bloodType || '',
@@ -663,11 +663,11 @@ export function InstitutionManagement() {
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-medium text-gray-700">Donor Wallet</span>
+                  <span className="label-text font-medium text-white">Donor Wallet</span>
                 </label>
                 <input
                   type="text"
-                  className={`input input-bordered w-full border-[oklch(65.69%_0.196_275.75_/_1)] focus:border-[oklch(65.69%_0.196_275.75_/_1)] focus:ring-[oklch(65.69%_0.196_275.75_/_1)] ${donorWalletError && usedUnit?.donorWallet ? 'border-red-500' : ''}`}
+                  className={`input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF] ${donorWalletError && usedUnit?.donorWallet ? 'border-red-500' : ''}`}
                   placeholder="Enter donor's public key"
                   value={usedUnit?.donorWallet || ''}
                   onChange={async (e) => {
@@ -689,7 +689,7 @@ export function InstitutionManagement() {
                 )}
               </div>
               <button 
-                className="btn bg-[#1a1a2e] hover:bg-[#16213e] text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 mt-4"
+                className="btn btn-lg w-full bg-[#9945FF] hover:bg-[#7a35d4] text-white border-0 shadow-md hover:shadow-lg transition-all duration-200"
                 onClick={handleRecordUsedUnit}
                 disabled={!usedUnit?.bloodType || !usedUnit?.id || !usedUnit?.donorWallet || !!donorWalletError || !isDonorValid}
               >
