@@ -385,8 +385,8 @@ export function InstitutionManagement() {
 
   if (!institution) {
     return (
-      <div className="alert alert-info max-w-2xl mx-auto">
-        <span>No institution found for your wallet. Please register as an institution first.</span>
+      <div className="alert bg-red-100 border-l-4 border-red-600 text-red-900 p-4 rounded-lg shadow-sm">
+        <span className="font-medium">No institution found for your wallet. Please register as an institution first.</span>
       </div>
     )
   }
@@ -411,21 +411,21 @@ export function InstitutionManagement() {
                       <span className="label-text">Blood Type</span>
                     </label>
                     <select
-                      className="select select-bordered w-full"
+                      className="select select-bordered w-full bg-white text-purple-700 border-purple-300 focus:border-purple-500 focus:ring-purple-500"
                       value={item.bloodType || getDefaultBloodType(index)}
                       onChange={(e) => handleInventoryChange(index, 'bloodType', e.target.value)}
                     >
                       {item.bloodType ? (
-                        <option value={item.bloodType}>{item.bloodType}</option>
+                        <option value={item.bloodType} className="text-purple-700">{item.bloodType}</option>
                       ) : (
-                        <option value={getDefaultBloodType(index)}>
+                        <option value={getDefaultBloodType(index)} className="text-purple-700">
                           {getDefaultBloodType(index)}
                         </option>
                       )}
                       {getAvailableBloodTypes(index)
                         .filter(type => type !== item.bloodType && type !== getDefaultBloodType(index))
                         .map(type => (
-                          <option key={type} value={type}>
+                          <option key={type} value={type} className="text-purple-700">
                             {type}
                           </option>
                         ))}
@@ -495,7 +495,7 @@ export function InstitutionManagement() {
                   <span className="label-text">Blood Type</span>
                 </label>
                 <select
-                  className="select select-bordered w-full"
+                  className="select select-bordered w-full bg-white text-purple-700 border-purple-300 focus:border-purple-500 focus:ring-purple-500"
                   value={newDonation?.bloodType || ''}
                   onChange={(e) => setNewDonation(prev => ({
                     bloodType: e.target.value,
@@ -504,9 +504,9 @@ export function InstitutionManagement() {
                     donorWallet: prev?.donorWallet || ''
                   }))}
                 >
-                  <option value="">Select blood type</option>
+                  <option value="" className="text-gray-500">Select blood type</option>
                   {BLOOD_TYPES.map(type => (
-                    <option key={type} value={type}>
+                    <option key={type} value={type} className="text-purple-700">
                       {type}
                     </option>
                   ))}
@@ -591,7 +591,7 @@ export function InstitutionManagement() {
                   <span className="label-text">Blood Type</span>
                 </label>
                 <select
-                  className="select select-bordered w-full"
+                  className="select select-bordered w-full bg-white text-purple-700 border-purple-300 focus:border-purple-500 focus:ring-purple-500"
                   value={usedUnit?.bloodType || ''}
                   onChange={(e) => setUsedUnit(prev => ({
                     bloodType: e.target.value,
@@ -601,9 +601,9 @@ export function InstitutionManagement() {
                     donorWallet: prev?.donorWallet || ''
                   }))}
                 >
-                  <option value="">Select blood type</option>
+                  <option value="" className="text-gray-500">Select blood type</option>
                   {BLOOD_TYPES.map(type => (
-                    <option key={type} value={type}>
+                    <option key={type} value={type} className="text-purple-700">
                       {type}
                     </option>
                   ))}
@@ -789,8 +789,8 @@ export function DonorManagement() {
           </div>
         ) : (
           <div className="space-y-4">
-            <div className="alert alert-info">
-              <span>No donor account found for your wallet. Register as a donor below.</span>
+            <div className="alert bg-red-100 border-l-4 border-red-600 text-red-900 p-4 rounded-lg shadow-sm">
+              <span className="font-medium">No donor account found for your wallet. Register as a donor below.</span>
             </div>
             
             <div className="form-control w-full max-w-md">
@@ -798,13 +798,13 @@ export function DonorManagement() {
                 <span className="label-text">Your Blood Type</span>
               </label>
               <select
-                className="select select-bordered w-full"
+                className="select select-bordered w-full bg-white text-purple-700 border-purple-300 focus:border-purple-500 focus:ring-purple-500"
                 value={selectedBloodType}
                 onChange={(e) => setSelectedBloodType(e.target.value)}
               >
-                <option value="">Select blood type</option>
+                <option value="" className="text-gray-500">Select blood type</option>
                 {BLOOD_TYPES.map(type => (
-                  <option key={type} value={type}>
+                  <option key={type} value={type} className="text-purple-700">
                     {type}
                   </option>
                 ))}
