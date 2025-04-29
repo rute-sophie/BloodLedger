@@ -393,15 +393,15 @@ export function InstitutionManagement() {
 
   return (
     <div className="card bg-gray-50 shadow-xl max-w-4xl mx-auto border-[oklch(65.69%_0.196_275.75_/_1)]">
-      <div className="card-body">
-        <h3 className="card-title text-2xl font-bold mb-6 text-gray-800">Institution Management</h3>
-        <div className="mb-6 p-4 bg-white rounded-lg shadow-sm border border-[oklch(65.69%_0.196_275.75_/_1)]">
+      <div className="card-body space-y-8">
+        <h3 className="card-title text-2xl font-bold mb-6 text-[#1a1a2e] bg-[#9945FF] p-4 rounded-lg shadow-sm">Institution Management</h3>
+        <div className="mb-6 p-6 bg-white rounded-lg shadow-sm border border-[oklch(65.69%_0.196_275.75_/_1)]">
           <p className="text-lg font-semibold text-gray-800">{institution.account.name}</p>
           <p className="text-sm text-gray-600">Owner: {institution.account.owner.toBase58()}</p>
         </div>
 
-        <div className="space-y-6">
-          <h4 className="text-xl font-semibold text-gray-800">Inventory Management</h4>
+        <div className="space-y-8">
+          <h4 className="text-xl font-semibold text-[#1a1a2e] bg-[#9945FF] p-4 rounded-lg shadow-sm">Inventory Management</h4>
           {inventory.map((item, index) => (
             <div key={index} className="card bg-white shadow-md hover:shadow-lg transition-shadow duration-200 border border-[oklch(65.69%_0.196_275.75_/_1)]">
               <div className="card-body p-6">
@@ -474,7 +474,7 @@ export function InstitutionManagement() {
 
         <div className="card-actions justify-end mt-8">
           <button 
-            className="btn bg-[oklch(65.69%_0.196_275.75_/_1)] hover:bg-[oklch(55.69%_0.196_275.75_/_1)] text-white border-0 shadow-md hover:shadow-lg transition-all duration-200"
+            className="btn bg-[#1a1a2e] hover:bg-[#16213e] text-white border-0 shadow-md hover:shadow-lg transition-all duration-200"
             onClick={handleSubmitInventory}
             disabled={isLoading}
           >
@@ -483,12 +483,12 @@ export function InstitutionManagement() {
         </div>
       </div>
       <div className="card bg-white shadow-xl mt-8 border border-[oklch(65.69%_0.196_275.75_/_1)]">
-        <div className="card-body">
-          <h2 className="card-title text-2xl font-bold text-gray-800 mb-6">Manage Blood Units</h2>
+        <div className="card-body space-y-8">
+          <h2 className="card-title text-2xl font-bold text-[#1a1a2e] mb-6 bg-[#9945FF] p-4 rounded-lg shadow-sm">Manage Blood Units</h2>
 
           {/* Register New Donation */}
           <div className="form-control w-full max-w-md mb-8">
-            <h3 className="text-xl font-semibold mb-6 text-gray-800">Register New Donation</h3>
+            <h3 className="text-xl font-semibold mb-6 text-[#1a1a2e] bg-[#9945FF] p-4 rounded-lg shadow-sm">Register New Donation</h3>
             <div className="grid grid-cols-1 gap-6">
               <div className="form-control">
                 <label className="label">
@@ -573,7 +573,7 @@ export function InstitutionManagement() {
                 )}
               </div>
               <button 
-                className="btn bg-blue-600 hover:bg-blue-700 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 mt-4"
+                className="btn bg-[#1a1a2e] hover:bg-[#16213e] text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 mt-4"
                 onClick={handleAddDonation}
                 disabled={!newDonation?.bloodType || !newDonation?.id || !newDonation?.expiryDays || !newDonation?.donorWallet || !!donorWalletError || !isDonorValid}
               >
@@ -584,7 +584,7 @@ export function InstitutionManagement() {
 
           {/* Record Used Unit */}
           <div className="form-control w-full max-w-md">
-            <h3 className="text-xl font-semibold mb-6 text-gray-800">Record Used Blood Unit</h3>
+            <h3 className="text-xl font-semibold mb-6 text-[#1a1a2e] bg-[#9945FF] p-4 rounded-lg shadow-sm">Record Used Blood Unit</h3>
             <div className="grid grid-cols-1 gap-6">
               <div className="form-control">
                 <label className="label">
@@ -689,7 +689,7 @@ export function InstitutionManagement() {
                 )}
               </div>
               <button 
-                className="btn bg-blue-600 hover:bg-blue-700 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 mt-4"
+                className="btn bg-[#1a1a2e] hover:bg-[#16213e] text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 mt-4"
                 onClick={handleRecordUsedUnit}
                 disabled={!usedUnit?.bloodType || !usedUnit?.id || !usedUnit?.donorWallet || !!donorWalletError || !isDonorValid}
               >
