@@ -191,7 +191,7 @@ export function ListInstitutions() {
           {getInstitutions.data?.map((institution) => (
             <li className="mb-4" key={institution.publicKey.toBase58()}>
               <p className="font-bold">{institution.account.name}</p>
-              <p className="text-sm text-gray-600">{institution.account.owner.toBase58()}</p>
+              <p className="text-sm text-yellow-300">Owner: {institution.account.owner.toBase58()}</p>
               <ul className="list-disc pl-5">
                 {institution.account.inventory.map((item, index) => (
                   <li key={index}>
@@ -392,314 +392,320 @@ export function InstitutionManagement() {
   }
 
   return (
-    <div className="card bg-[#1a1a2e] shadow-xl max-w-4xl mx-auto border-[#9945FF]">
-      <div className="card-body space-y-4">
-        <h3 className="card-title text-2xl font-bold mb-2 text-white p-4 rounded-lg shadow-sm">Institution Management</h3>
-        <div className="mb-4 p-6 bg-[#2a2a3a] rounded-lg shadow-sm border border-[#9945FF]">
-          <p className="text-lg font-semibold text-white">{institution.account.name}</p>
-          <p className="text-sm text-gray-400">Owner: {institution.account.owner.toBase58()}</p>
-        </div>
+    <>
+      <div className="card bg-[#1a1a2e] shadow-xl max-w-4xl mx-auto border-[#9945FF]">
+        <div className="card-body space-y-4">
+          <h3 className="card-title text-2xl font-bold mb-2 text-white p-4 rounded-lg shadow-sm">Institution Management</h3>
+          <div className="mb-4 p-6 bg-[#2a2a3a] rounded-lg shadow-sm border border-[#9945FF]">
+            <p className="text-lg font-semibold text-[rgb(153_69_255)]">{institution.account.name}</p>
+            <p className="text-sm text-yellow-300">Owner: {institution.account.owner.toBase58()}</p>
+          </div>
 
-        <div className="space-y-8">
-          <h4 className="text-xl font-semibold text-white p-4 rounded-lg shadow-sm">Inventory Management</h4>
-          {inventory.map((item, index) => (
-            <div key={index} className="card bg-[#2a2a3a] shadow-md hover:shadow-lg transition-shadow duration-200 border border-[#9945FF]">
-              <div className="card-body p-6">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text font-medium text-white">Blood Type</span>
-                    </label>
-                    <select
-                      className="select select-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF] hover:border-[#9945FF] transition-colors duration-200"
-                      value={item.bloodType || getDefaultBloodType(index)}
-                      onChange={(e) => handleInventoryChange(index, 'bloodType', e.target.value)}
-                    >
-                      {item.bloodType ? (
-                        <option value={item.bloodType} className="text-white">{item.bloodType}</option>
-                      ) : (
-                        <option value={getDefaultBloodType(index)} className="text-white">
-                          {getDefaultBloodType(index)}
-                        </option>
-                      )}
-                      {getAvailableBloodTypes(index)
-                        .filter(type => type !== item.bloodType && type !== getDefaultBloodType(index))
-                        .map(type => (
-                          <option key={type} value={type} className="text-white">
-                            {type}
+          <div className="space-y-8">
+            <h4 className="text-xl font-semibold text-white p-4 rounded-lg shadow-sm mt-8">Inventory Management</h4>
+            {inventory.map((item, index) => (
+              <div key={index} className="card bg-[#2a2a3a] shadow-md hover:shadow-lg transition-shadow duration-200 border border-[#9945FF]">
+                <div className="card-body p-6">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div className="form-control">
+                      <label className="label">
+                        <span className="label-text font-medium text-white">Blood Type</span>
+                      </label>
+                      <select
+                        className="select select-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF] hover:border-[#9945FF] transition-colors duration-200"
+                        value={item.bloodType || getDefaultBloodType(index)}
+                        onChange={(e) => handleInventoryChange(index, 'bloodType', e.target.value)}
+                      >
+                        {item.bloodType ? (
+                          <option value={item.bloodType} className="text-white">{item.bloodType}</option>
+                        ) : (
+                          <option value={getDefaultBloodType(index)} className="text-white">
+                            {getDefaultBloodType(index)}
                           </option>
-                        ))}
-                    </select>
-                  </div>
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text font-medium text-white">Current Units</span>
-                    </label>
-                    <input
-                      type="number"
-                      className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
-                      value={item.currentUnits.toString()}
-                      onChange={(e) => handleInventoryChange(index, 'currentUnits', e.target.value)}
-                    />
-                  </div>
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text font-medium text-white">Used Units</span>
-                    </label>
-                    <input
-                      type="number"
-                      className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
-                      value={item.used.toString()}
-                      onChange={(e) => handleInventoryChange(index, 'used', e.target.value)}
-                    />
-                  </div>
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text font-medium text-white">Demand Level (0-255)</span>
-                    </label>
-                    <input
-                      type="number"
-                      min="0"
-                      max="255"
-                      className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
-                      value={item.demand}
-                      onChange={(e) => handleInventoryChange(index, 'demand', e.target.value)}
-                    />
+                        )}
+                        {getAvailableBloodTypes(index)
+                          .filter(type => type !== item.bloodType && type !== getDefaultBloodType(index))
+                          .map(type => (
+                            <option key={type} value={type} className="text-white">
+                              {type}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                    <div className="form-control">
+                      <label className="label">
+                        <span className="label-text font-medium text-white">Current Units</span>
+                      </label>
+                      <input
+                        type="number"
+                        className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
+                        value={item.currentUnits.toString()}
+                        onChange={(e) => handleInventoryChange(index, 'currentUnits', e.target.value)}
+                      />
+                    </div>
+                    <div className="form-control">
+                      <label className="label">
+                        <span className="label-text font-medium text-white">Used Units</span>
+                      </label>
+                      <input
+                        type="number"
+                        className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
+                        value={item.used.toString()}
+                        onChange={(e) => handleInventoryChange(index, 'used', e.target.value)}
+                      />
+                    </div>
+                    <div className="form-control">
+                      <label className="label">
+                        <span className="label-text font-medium text-white">Demand Level (0-255)</span>
+                      </label>
+                      <input
+                        type="number"
+                        min="0"
+                        max="255"
+                        className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
+                        value={item.demand}
+                        onChange={(e) => handleInventoryChange(index, 'demand', e.target.value)}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <div className="card-actions justify-end mt-8">
-          <button 
-            className="btn bg-[#9945FF] hover:bg-[#7a35d4] text-white border-0 shadow-md hover:shadow-lg transition-all duration-200"
-            onClick={handleSubmitInventory}
-            disabled={isLoading}
-          >
-            Update Inventory {isLoading && '...'}
-          </button>
+          <div className="card-actions justify-end mt-8">
+            <button 
+              className="btn bg-[#9945FF] hover:bg-[#7a35d4] text-white border-0 shadow-md hover:shadow-lg transition-all duration-200"
+              onClick={handleSubmitInventory}
+              disabled={isLoading}
+            >
+              Update Inventory {isLoading && '...'}
+            </button>
+          </div>
         </div>
       </div>
-      <div className="card bg-[#2a2a3a] shadow-xl mt-8 border border-[#9945FF]">
-        <div className="card-body space-y-4">
-          <h2 className="card-title text-2xl font-bold text-white p-4 rounded-lg shadow-sm">Manage Blood Units</h2>
 
+      <div className="max-w-4xl mx-auto mt-8">
+        <h2 className="text-2xl font-bold text-white p-4 rounded-lg shadow-sm text-center mb-8 mt-12">Manage Blood Units</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Register New Donation */}
-          <div className="form-control w-full max-w-md mb-8">
-            <h3 className="text-xl font-semibold mb-6 text-white p-4 rounded-lg shadow-sm">Register New Donation</h3>
-            <div className="grid grid-cols-1 gap-6">
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium text-white">Blood Type</span>
-                </label>
-                <select
-                  className="select select-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF] hover:border-[#9945FF] transition-colors duration-200"
-                  value={newDonation?.bloodType || ''}
-                  onChange={(e) => setNewDonation(prev => ({
-                    bloodType: e.target.value,
-                    id: prev?.id || '',
-                    expiryDays: prev?.expiryDays || '',
-                    donorWallet: prev?.donorWallet || ''
-                  }))}
-                >
-                  <option value="" className="text-gray-400">Choose blood type</option>
-                  {BLOOD_TYPES.map(type => (
-                    <option key={type} value={type} className="text-white">
-                      {type}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium text-white">Unit ID</span>
-                </label>
-                <input
-                  type="text"
-                  className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
-                  placeholder="Unique ID for this donation"
-                  value={newDonation?.id || ''}
-                  onChange={(e) => setNewDonation(prev => ({
-                    bloodType: prev?.bloodType || '',
-                    id: e.target.value,
-                    expiryDays: prev?.expiryDays || '',
-                    donorWallet: prev?.donorWallet || ''
-                  }))}
-                />
-              </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium text-white">Expiry Date (days from now)</span>
-                </label>
-                <input
-                  type="number"
-                  className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
-                  placeholder="Number of days"
-                  value={newDonation?.expiryDays || ''}
-                  onChange={(e) => setNewDonation(prev => ({
-                    bloodType: prev?.bloodType || '',
-                    id: prev?.id || '',
-                    expiryDays: e.target.value,
-                    donorWallet: prev?.donorWallet || ''
-                  }))}
-                />
-              </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium text-white">Donor Wallet</span>
-                </label>
-                <input
-                  type="text"
-                  className={`input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF] ${donorWalletError && newDonation?.donorWallet ? 'border-red-500' : ''}`}
-                  placeholder="Enter donor's public key"
-                  value={newDonation?.donorWallet || ''}
-                  onChange={async (e) => {
-                    const value = e.target.value;
-                    await validateDonorWallet(value);
-                    setNewDonation(prev => ({
-                      bloodType: prev?.bloodType || '',
+          <div className="card bg-[#2a2a3a] shadow-xl border border-[#9945FF]">
+            <div className="card-body">
+              <h3 className="text-xl font-semibold mb-6 text-white p-4 rounded-lg shadow-sm text-center">Register New Donation</h3>
+              <div className="grid grid-cols-1 gap-6">
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium text-white">Blood Type</span>
+                  </label>
+                  <select
+                    className="select select-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF] hover:border-[#9945FF] transition-colors duration-200"
+                    value={newDonation?.bloodType || ''}
+                    onChange={(e) => setNewDonation(prev => ({
+                      bloodType: e.target.value,
                       id: prev?.id || '',
                       expiryDays: prev?.expiryDays || '',
-                      donorWallet: value
-                    }));
-                  }}
-                />
-                {donorWalletError && newDonation?.donorWallet && (
+                      donorWallet: prev?.donorWallet || ''
+                    }))}
+                  >
+                    <option value="" className="text-gray-400">Choose blood type</option>
+                    {BLOOD_TYPES.map(type => (
+                      <option key={type} value={type} className="text-white">
+                        {type}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-control">
                   <label className="label">
-                    <span className="label-text-alt text-red-500">{donorWalletError}</span>
+                    <span className="label-text font-medium text-white">Unit ID</span>
                   </label>
-                )}
+                  <input
+                    type="text"
+                    className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
+                    placeholder="Unique ID for this donation"
+                    value={newDonation?.id || ''}
+                    onChange={(e) => setNewDonation(prev => ({
+                      bloodType: prev?.bloodType || '',
+                      id: e.target.value,
+                      expiryDays: prev?.expiryDays || '',
+                      donorWallet: prev?.donorWallet || ''
+                    }))}
+                  />
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium text-white">Expiry Date (days from now)</span>
+                  </label>
+                  <input
+                    type="number"
+                    className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
+                    placeholder="Number of days"
+                    value={newDonation?.expiryDays || ''}
+                    onChange={(e) => setNewDonation(prev => ({
+                      bloodType: prev?.bloodType || '',
+                      id: prev?.id || '',
+                      expiryDays: e.target.value,
+                      donorWallet: prev?.donorWallet || ''
+                    }))}
+                  />
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium text-white">Donor Wallet</span>
+                  </label>
+                  <input
+                    type="text"
+                    className={`input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF] ${donorWalletError && newDonation?.donorWallet ? 'border-red-500' : ''}`}
+                    placeholder="Enter donor's public key"
+                    value={newDonation?.donorWallet || ''}
+                    onChange={async (e) => {
+                      const value = e.target.value;
+                      await validateDonorWallet(value);
+                      setNewDonation(prev => ({
+                        bloodType: prev?.bloodType || '',
+                        id: prev?.id || '',
+                        expiryDays: prev?.expiryDays || '',
+                        donorWallet: value
+                      }));
+                    }}
+                  />
+                  {donorWalletError && newDonation?.donorWallet && (
+                    <label className="label">
+                      <span className="label-text-alt text-red-500">{donorWalletError}</span>
+                    </label>
+                  )}
+                </div>
+                <button 
+                  className="btn bg-[#9945FF] hover:bg-[#7a35d4] text-white border-0 shadow-md hover:shadow-lg transition-all duration-200"
+                  onClick={handleAddDonation}
+                  disabled={!newDonation?.bloodType || !newDonation?.id || !newDonation?.expiryDays || !newDonation?.donorWallet || !!donorWalletError || !isDonorValid}
+                >
+                  Register Donation
+                </button>
               </div>
-              <button 
-                className="btn btn-lg w-full bg-[#9945FF] hover:bg-[#7a35d4] text-white border-0 shadow-md hover:shadow-lg transition-all duration-200"
-                onClick={handleAddDonation}
-                disabled={!newDonation?.bloodType || !newDonation?.id || !newDonation?.expiryDays || !newDonation?.donorWallet || !!donorWalletError || !isDonorValid}
-              >
-                Register Donation
-              </button>
             </div>
           </div>
 
           {/* Record Used Unit */}
-          <div className="form-control w-full max-w-md">
-            <h3 className="text-xl font-semibold mb-6 text-white p-4 rounded-lg shadow-sm">Record Used Blood Unit</h3>
-            <div className="grid grid-cols-1 gap-6">
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium text-white">Blood Type</span>
-                </label>
-                <select
-                  className="select select-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF] hover:border-[#9945FF] transition-colors duration-200"
-                  value={usedUnit?.bloodType || ''}
-                  onChange={(e) => setUsedUnit(prev => ({
-                    bloodType: e.target.value,
-                    id: prev?.id || '',
-                    expired: prev?.expired || false,
-                    healthCheck: prev?.healthCheck || false,
-                    donorWallet: prev?.donorWallet || ''
-                  }))}
-                >
-                  <option value="" className="text-gray-400">Choose blood type</option>
-                  {BLOOD_TYPES.map(type => (
-                    <option key={type} value={type} className="text-white">
-                      {type}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium text-white">Unit ID</span>
-                </label>
-                <input
-                  type="text"
-                  className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
-                  placeholder="ID of the used unit"
-                  value={usedUnit?.id || ''}
-                  onChange={(e) => setUsedUnit(prev => ({
-                    bloodType: prev?.bloodType || '',
-                    id: e.target.value,
-                    expired: prev?.expired || false,
-                    healthCheck: prev?.healthCheck || false,
-                    donorWallet: prev?.donorWallet || ''
-                  }))}
-                />
-              </div>
-              <div className="form-control">
-                <label className="label cursor-pointer">
-                  <span className="label-text font-medium text-white">Expired</span>
-                  <input
-                    type="checkbox"
-                    className="checkbox checkbox-primary border-[#9945FF]"
-                    checked={usedUnit?.expired || false}
-                    onChange={(e) => setUsedUnit(prev => ({
-                      bloodType: prev?.bloodType || '',
-                      id: prev?.id || '',
-                      expired: e.target.checked,
-                      healthCheck: prev?.healthCheck || false,
-                      donorWallet: prev?.donorWallet || ''
-                    }))}
-                  />
-                </label>
-              </div>
-              <div className="form-control">
-                <label className="label cursor-pointer">
-                  <span className="label-text font-medium text-white">Passed Health Check</span>
-                  <input
-                    type="checkbox"
-                    className="checkbox checkbox-primary border-[#9945FF]"
-                    checked={usedUnit?.healthCheck || false}
-                    onChange={(e) => setUsedUnit(prev => ({
-                      bloodType: prev?.bloodType || '',
-                      id: prev?.id || '',
-                      expired: prev?.expired || false,
-                      healthCheck: e.target.checked,
-                      donorWallet: prev?.donorWallet || ''
-                    }))}
-                  />
-                </label>
-              </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium text-white">Donor Wallet</span>
-                </label>
-                <input
-                  type="text"
-                  className={`input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF] ${donorWalletError && usedUnit?.donorWallet ? 'border-red-500' : ''}`}
-                  placeholder="Enter donor's public key"
-                  value={usedUnit?.donorWallet || ''}
-                  onChange={async (e) => {
-                    const value = e.target.value;
-                    await validateDonorWallet(value);
-                    setUsedUnit(prev => ({
-                      bloodType: prev?.bloodType || '',
-                      id: prev?.id || '',
-                      expired: prev?.expired || false,
-                      healthCheck: prev?.healthCheck || false,
-                      donorWallet: value
-                    }));
-                  }}
-                />
-                {donorWalletError && usedUnit?.donorWallet && (
+          <div className="card bg-[#2a2a3a] shadow-xl border border-[#9945FF]">
+            <div className="card-body">
+              <h3 className="text-xl font-semibold mb-6 text-white p-4 rounded-lg shadow-sm text-center">Record Used Blood Unit</h3>
+              <div className="grid grid-cols-1 gap-6">
+                <div className="form-control">
                   <label className="label">
-                    <span className="label-text-alt text-red-500">{donorWalletError}</span>
+                    <span className="label-text font-medium text-white">Blood Type</span>
                   </label>
-                )}
+                  <select
+                    className="select select-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF] hover:border-[#9945FF] transition-colors duration-200"
+                    value={usedUnit?.bloodType || ''}
+                    onChange={(e) => setUsedUnit(prev => ({
+                      bloodType: e.target.value,
+                      id: prev?.id || '',
+                      expired: prev?.expired || false,
+                      healthCheck: prev?.healthCheck || false,
+                      donorWallet: prev?.donorWallet || ''
+                    }))}
+                  >
+                    <option value="" className="text-gray-400">Choose blood type</option>
+                    {BLOOD_TYPES.map(type => (
+                      <option key={type} value={type} className="text-white">
+                        {type}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium text-white">Unit ID</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF]"
+                    placeholder="ID of the used unit"
+                    value={usedUnit?.id || ''}
+                    onChange={(e) => setUsedUnit(prev => ({
+                      bloodType: prev?.bloodType || '',
+                      id: e.target.value,
+                      expired: prev?.expired || false,
+                      healthCheck: prev?.healthCheck || false,
+                      donorWallet: prev?.donorWallet || ''
+                    }))}
+                  />
+                </div>
+                <div className="form-control">
+                  <label className="label cursor-pointer">
+                    <span className="label-text font-medium text-white">Expired</span>
+                    <input
+                      type="checkbox"
+                      className="checkbox checkbox-primary border-[#9945FF]"
+                      checked={usedUnit?.expired || false}
+                      onChange={(e) => setUsedUnit(prev => ({
+                        bloodType: prev?.bloodType || '',
+                        id: prev?.id || '',
+                        expired: e.target.checked,
+                        healthCheck: prev?.healthCheck || false,
+                        donorWallet: prev?.donorWallet || ''
+                      }))}
+                    />
+                  </label>
+                </div>
+                <div className="form-control">
+                  <label className="label cursor-pointer">
+                    <span className="label-text font-medium text-white">Passed Health Check</span>
+                    <input
+                      type="checkbox"
+                      className="checkbox checkbox-primary border-[#9945FF]"
+                      checked={usedUnit?.healthCheck || false}
+                      onChange={(e) => setUsedUnit(prev => ({
+                        bloodType: prev?.bloodType || '',
+                        id: prev?.id || '',
+                        expired: prev?.expired || false,
+                        healthCheck: e.target.checked,
+                        donorWallet: prev?.donorWallet || ''
+                      }))}
+                    />
+                  </label>
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium text-white">Donor Wallet</span>
+                  </label>
+                  <input
+                    type="text"
+                    className={`input input-bordered w-full bg-[#2a2a3a] text-white border-[#9945FF] focus:border-[#9945FF] focus:ring-[#9945FF] ${donorWalletError && usedUnit?.donorWallet ? 'border-red-500' : ''}`}
+                    placeholder="Enter donor's public key"
+                    value={usedUnit?.donorWallet || ''}
+                    onChange={async (e) => {
+                      const value = e.target.value;
+                      await validateDonorWallet(value);
+                      setUsedUnit(prev => ({
+                        bloodType: prev?.bloodType || '',
+                        id: prev?.id || '',
+                        expired: prev?.expired || false,
+                        healthCheck: prev?.healthCheck || false,
+                        donorWallet: value
+                      }));
+                    }}
+                  />
+                  {donorWalletError && usedUnit?.donorWallet && (
+                    <label className="label">
+                      <span className="label-text-alt text-red-500">{donorWalletError}</span>
+                    </label>
+                  )}
+                </div>
+                <button 
+                  className="btn bg-[#9945FF] hover:bg-[#7a35d4] text-white border-0 shadow-md hover:shadow-lg transition-all duration-200"
+                  onClick={handleRecordUsedUnit}
+                  disabled={!usedUnit?.bloodType || !usedUnit?.id || !usedUnit?.donorWallet || !!donorWalletError || !isDonorValid}
+                >
+                  Record Used Unit
+                </button>
               </div>
-              <button 
-                className="btn btn-lg w-full bg-[#9945FF] hover:bg-[#7a35d4] text-white border-0 shadow-md hover:shadow-lg transition-all duration-200"
-                onClick={handleRecordUsedUnit}
-                disabled={!usedUnit?.bloodType || !usedUnit?.id || !usedUnit?.donorWallet || !!donorWalletError || !isDonorValid}
-              >
-                Record Used Unit
-              </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -782,7 +788,7 @@ export function DonorManagement() {
               {donor.numberDonation === 0 && (
                 <p>Health Check: {donor.healthCheck ? 'Passed' : 'Failed'}</p>
               )}
-              <p className="text-sm text-gray-600 mt-2">
+              <p className="text-sm text-yellow-300 mt-2">
                 Your donor account is registered and active.
               </p>
             </div>
