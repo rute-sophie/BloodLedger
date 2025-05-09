@@ -397,7 +397,7 @@ export function InstitutionManagement() {
         <div className="card-body space-y-4">
           <h3 className="card-title text-2xl font-bold mb-2 text-white p-4 rounded-lg shadow-sm">Institution Management</h3>
           <div className="mb-4 p-6 bg-[#2a2a3a] rounded-lg shadow-sm border border-[#9945FF]">
-            <p className="text-lg font-semibold text-[rgb(153_69_255)]">{institution.account.name}</p>
+            <p className="text-lg font-semibold text-[rgb(171_120_233)]">{institution.account.name}</p>
             <p className="text-sm text-yellow-300">Owner: {institution.account.owner.toBase58()}</p>
           </div>
 
@@ -804,13 +804,13 @@ export function DonorManagement() {
                 <span className="label-text">Your Blood Type</span>
               </label>
               <select
-                className="select select-bordered w-full bg-white text-purple-700 border-purple-300 focus:border-purple-500 focus:ring-purple-500 hover:border-purple-400 transition-colors duration-200"
+                className="select select-bordered w-full bg-white text-[rgb(171_120_233)] border-purple-300 focus:border-purple-500 focus:ring-purple-500 hover:border-purple-400 transition-colors duration-200"
                 value={selectedBloodType}
                 onChange={(e) => setSelectedBloodType(e.target.value)}
               >
-                <option value="" className="text-purple-400">Choose blood type</option>
+                <option value="" className="text-gray-400">Choose blood type</option>
                 {BLOOD_TYPES.map(type => (
-                  <option key={type} value={type} className="text-purple-700">
+                  <option key={type} value={type} className="text-gray-400">
                     {type}
                   </option>
                 ))}
